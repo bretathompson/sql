@@ -1,0 +1,62 @@
+SELECT (coloums) state 		use DISTINCT to filter repeat items
+FROM (what coloums) customers
+
+comparison signs >, >=, <, <=, =, != or <>
+
+AND will run before OR
+SELECT *
+FROM order_items
+WHERE order_id = 6 AND unit_price * quantity > 30
+
+use in to compare properties
+SELECT *
+FROM Customers
+WHERE state NOT IN ('VA', 'FL', 'GA')
+
+use between operator
+WHERE points >= 1000 AND points <= 3000
+WHERE points BETWEEN 1000 AND 3000
+
+use like operator
+SELECT *
+FROM customers
+WHERE last_name LIKE 'b%'  _y use for charater then y or __ y for 2 then y % for start or end with
+
+SELECT *
+FROM customers
+WHERE address LIKE '%trail%' OR 
+	address LIKE '%avenue%' AND
+
+
+use REGEXP operator reg expression
+SELECT *
+FROM customers
+WHERE last_name REGEXP 'field'  
+use ^ starts with '^e'
+use $ for ends with  'e$'   
+use | for or  'e|f|g'  
+REGEXP '[fgh]e'   [] for charates 
+
+
+use IS NULL operator
+SELECT *
+FROM customers
+WHERE phone IS NULL
+
+ORDER BY clause
+SELECT *
+FROM customers
+ORDER BY state, first_name DESC
+	DESC decending order
+
+LIMIT clause is the last clause
+SELECT *
+FROM customers
+LIMIT 3
+LIMIT 6, 3 skip 6 then get next 3
+
+
+
+
+
+

@@ -1,0 +1,52 @@
+
+-- TASK 1
+-- Create a query that returns all columns from the products table where the product name meets the following criteria:
+-- You must use the LIKE keyword
+-- The first 4 characters of the name could be anything
+-- The 5th character should be a "c"
+-- The rest of the name can be any character
+-- SELECT *
+-- FROM products
+-- WHERE name LIKE '_____c%'
+
+
+-- TASK 2
+-- Create a query that uses a regular expression to return all columns for products that have a product name that ends with the letters "rt" or begins with the letters "br"
+-- SELECT *
+-- FROM products
+-- WHERE name REGEXP 'rt$|^br'
+
+
+-- TASK 3
+-- Create a query that returns all columns for products that have more than 90 units in stock. Order the result by the unit price with the more expensive products at the top of the table
+-- SELECT *
+-- FROM products
+-- WHERE quantity_in_stock > 90
+-- ORDER BY unit_price DESC
+
+
+
+-- TASK 4
+-- Create a query that returns all columns for the top 3 cheapest products
+-- SELECT *
+-- FROM products
+-- ORDER BY unit_price
+-- LIMIT 3
+
+
+
+-- TASK 5
+-- Create a query that uses a regular expression to return all columns for products that have either the word "sweet" or "ranch" in them
+-- SELECT *
+-- FROM products
+-- WHERE name REGEXP 'sweet|ranch'
+
+
+
+-- TASK 6
+-- Create a query that uses a regular expression to return all columns for products that have the letters v - z (v, w, x, y, z) in them. Use a range in your query
+-- SELECT *
+-- FROM products
+-- WHERE name REGEXP '[v-z]'
+
+

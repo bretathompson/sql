@@ -1,0 +1,46 @@
+-- TASK 1
+-- Create a query to select the following from the products table:
+-- name
+-- unit price
+-- unit price with a 20% markup (unit price multiplied by 1.2)
+-- Give this column the alias name of Markup
+-- SELECT 
+--   name,
+--   unit_price,
+--   (unit_price * 1.2) AS Markup
+-- FROM products
+
+
+-- TASK 2
+-- Create a query that returns all columns from the products table but only the records that have a unit price of $4.00 or more
+-- SELECT *
+-- FROM products
+-- WHERE unit_price >= 4.00
+
+--   
+-- TASK 3
+-- Create a query that returns all columns for products that have an available stock of more than 90 units and also have a cost of over $3.00
+-- SELECT *
+-- FROM products
+-- WHERE quantity_in_stock > 90 AND unit_price > 3.00
+
+
+-- TASK 4
+-- Create a query that returns all columns for products that have an available stock of less than 10, or that cost over $4.50
+-- SELECT *
+-- FROM products
+-- WHERE quantity_in_stock < 10 OR unit_price > 4.50
+
+
+-- TASK 5
+-- Create a query that returns all columns for products that have a quantity of exactly 70, 80, or 90. You may not use the = (equals) operator for this query
+-- SELECT *
+-- FROM products
+-- WHERE quantity_in_stock IN (70, 80, 90)
+
+
+-- TASK 6
+-- Create a query that returns all columns for products that have a quantity between 10 and 20
+-- SELECT *
+-- FROM products
+-- WHERE quantity_in_stock BETWEEN 10 AND 20
