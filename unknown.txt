@@ -56,7 +56,167 @@ LIMIT 3
 LIMIT 6, 3 skip 6 then get next 3
 
 
+inner join
+SELECT *
+FROM orders
+JOIN customers
+	ON orders.customer_id = customers.customer_id
+	
+SELECT order_id, orders.customer_id, first_name, last_name
+FROM orders
+JOIN customers
+	ON orders.customer_id = customers.customer_id
 
 
+joining across database
+USE sql_inventory;
+
+SELECT *
+FROM sql_store.order_items oi 
+JOIN (with database name) sql_inventory.products p
+	ON oi.product_id = p.product_id
 
 
+self joins must use an alias e, m
+USE sql_hr;
+
+SELECT e.employee_id, 
+		e.first_name,
+        m.first_name AS manager
+FROM employees e
+JOIN employees m
+	ON e.reports_to = m.employee_id
+
+
+join multiple tables
+USE sql_store;
+
+SELECT *
+FROM orders o
+JOIN customers c
+	ON o.customer_id = c.customer_id
+JOIN order_statuses os
+	ON o.status = os.order_status_id
+
+
+compound join conditions
+USE sql_store;
+
+SELECT *
+FROM order_items oi
+JOIN order_item_notes oin
+	ON oi.order_id = oin.order_id
+    AND oi.product_id = oin.product_id
+
+
+implicit join syntax
+SELECT *
+FROM order_items o
+JOIN customers c
+	ON o.customer_id = c.customer_id
+--IMPLICIT syntax--  DONT USE THIS METHOD
+SELECT *
+FROM orders o, customers c
+WHERE o.customer_id = c.customer_id
+
+
+outer joins
+SELECT 
+	c.customer_id,
+    c.first_name,
+    o.order_id
+FROM customers c 
+LEFT JOIN orders o  from the left if they are true or not
+	ON c.customer_id = o.customer_id
+ORDER BY c.customer_id
+
+SELECT 
+	c.customer_id,
+    c.first_name,
+    o.order_id
+FROM orders o     you need to flip the FROM and JOIN lines
+RIGHT JOIN customers c
+	ON c.customer_id = o.customer_id
+ORDER BY c.customer_id
+
+
+outer join between multiple tables
+SELECT 
+	c.customer_id,
+    c.first_name,
+    o.order_id
+FROM customers c 
+LEFT JOIN orders o
+	ON c.customer_id = o.customer_id
+LEFT JOIN shippers sh
+	ON o.shipper_id = sh.shipper_id
+ORDER BY c.customer_id
+
+
+self outer joins
+USE sql_hr;
+
+SELECT 
+	e.employee_id,
+    e.first_name,
+    m.first_name AS manager
+FROM employees e
+LEFT JOIN employees m
+	on e.reports_to = m.employee_id
+
+
+USING clause
+SELECT 
+	o.order_id,
+    c.first_name,
+    sh.name AS shipper
+FROM orders o
+JOIN customers c
+	USING (customer_id)
+LEFT JOIN shippers sh
+	USING (shipper_id) the coloums name (shipper_id) must be identical on all tables
+
+SELECT *
+FROM order_items oi
+JOIN order_item_notes oin
+	USING (order_id, product_id)
+
+
+natural joins  system picts based on same name coloums 
+SELECT 
+	o.order_id,
+    c.first_name
+FROM orders o
+NATURAL JOIN customers c 
+
+
+cross joins  all records from 1st table with 2nd table
+SELECT 
+	c.first_name AS customer,
+	p.name AS product
+FROM customers c
+CROSS JOIN products p
+ORDER BY c.first_name
+
+
+unions  to combine rows
+SELECT 
+	order_id,
+    order_date,
+    'Active' AS status
+FROM orders
+WHERE order_date >= '2019-01-01'
+UNION 
+SELECT 
+	order_id,
+    order_date,
+    'Archived' AS status
+FROM orders
+WHERE order_date < '2019-01-01'
+
+SELECT first_name  (the number of coloums in "select" must be the same)
+					and the 1st select is will be the name of coloum shown
+FROM customers
+UNION
+SELECT name
+FROM shippers
