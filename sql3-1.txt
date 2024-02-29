@@ -1,0 +1,67 @@
+TASK 1
+Use the sql_invoicing database. Combine the clients table with the payments table and return the client's name, 
+followed by the amount of the payment, followed by the date of the transaction. Include aliases for the table names 
+in your query. 
+SELECT c.name AS client_name, p.amount AS payment_amount, p.date AS transaction_date
+FROM clients c
+JOIN payments p ON c.client_id = p.client_id;
+
+
+TASK 2
+Create the following query:
+1. Include a statement to select the sql_store database
+2. Join the order_item_notes table in the sql_store database with the products table of the sql_inventory database using the 
+product id columns
+3. Return the following columns: note, name, unit_price
+4. Use aliases in your query for each table name
+USE sql_store;
+
+SELECT oi.note, p.name, p.unit_price
+FROM order_item_notes oi
+JOIN sql_inventory.products p ON oi.product_id = p.product_id;
+
+
+TASK 3
+Follow the directions in the 3-Self Joins video to create a self join. Display each employee id, employee first name, 
+and who they report to. Use the alias of "manager" for the person who they report to. When finished, modify the query 
+so only employees with an employee id of less than 40000 displays in the result.
+SELECT e.employee_id, e.first_name, m.first_name AS manager
+FROM employees e
+JOIN employees m ON e.manager_id = m.employee_id
+WHERE e.employee_id < 40000;
+-- Note: In the absence of the actual "employees" table in the provided database, I used a placeholder "employees" table.
+
+TASK 4
+Use the sql_store database. Create a query to return the first name and last name of the customer, and the product name 
+that the customer ordered. Only return the result for the first customer in the orders table (order_id = 1). This will 
+require multiple joins to accomplish this task. Here are some relationships and hints that can help:
+
+1. The orders table contains all of the columns that coincide with the other tables (start your query here)
+2. Here is a list of the columns that match between the tables:
+Table 1	Table 2	Common Column	Hint
+orders	customers	customer_id	The customers table contains the first name and last name for each customer
+orders	order_items	order_id	The order_items table contains the product_id number needed to get the product name
+orders	products	product_id	The products table contains the name of the product that was ordered
+
+SELECT
+    c.first_name,
+    c.last_name,
+    p.name AS product_name
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id
+JOIN order_items oi ON o.order_id = oi.order_id
+JOIN products p ON oi.product_id = p.product_id
+WHERE o.order_id = 1;
+
+
+TASK 5
+Update the following query to Implicit Join Syntax:
+SELECT *
+FROM challenge c
+JOIN participants p
+   ON c.customer_name = p.customer_name
+   
+SELECT *
+FROM challenge c, participants p
+WHERE c.customer_name = p.customer_name;
+
