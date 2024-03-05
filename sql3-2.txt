@@ -1,0 +1,99 @@
+
+-- TASK 1
+-- Use the sql_store database. 
+-- If you look at the customers table, you can see that there are 10 total customers. If you look at the orders table, you can see the 
+-- customers that ordered something. The problem is, not every customer has placed an order so not all customers are listed in the orders 
+-- table. Your boss wants to know which customers have ordered an item and which ones have not. Your task is to create a join that will 
+-- display every customer (whether they ordered something or not) and every order made. Please return the following information in your 
+-- query result: customer_id, first_name, last_name, order_date
+-- SELECT c.customer_id, 
+-- 	c.first_name, 
+--     c.last_name, 
+--     o.order_date
+-- FROM customers c
+-- LEFT JOIN orders o ON c.customer_id = o.customer_id;
+
+
+-- TASK 2
+-- Your boss is happy with your work in the previous task, but now he wants you to provide the customer’s order status (shipped, processed, etc.). 
+-- He still wants the exact same list as the previous task, only with the new status information. Create another join that will display the 
+-- status for each of the orders. Create an alias of “status” for this new column. Remember, your result should look exactly like the result 
+-- in the previous task except for the newly added status column.
+-- SELECT c.customer_id, 
+-- 	c.first_name, 
+-- 	c.last_name, 
+-- 	o.order_date,
+-- 	os.name AS status
+-- FROM customers c
+-- LEFT JOIN orders o ON c.customer_id = o.customer_id
+-- LEFT JOIN order_statuses os ON o.status = os.order_status_id;
+
+
+-- TASK 3
+-- Follow the directions in the 9 – Self Outer Joins video to create the self join. Change the default order to display the first name field in 
+-- descending order. Only return the top 3 results in your query.
+-- USE sql_store;
+
+-- SELECT emp1.first_name
+-- FROM customers AS emp1
+-- LEFT JOIN customers AS emp2 ON emp1.customer_id = emp2.customer_id
+-- ORDER BY emp1.first_name DESC
+-- LIMIT 3;
+  
+    
+-- TASK 4
+-- Use the sql_store database.
+-- Create a query to return the orders in the orders table. Display the customer’s first and last names and their order status 
+-- (Processed, Shipped, etc.). Employ the USING keyword where applicable.
+-- USE sql_store;
+
+-- SELECT o.order_id, 
+-- 	c.first_name, 
+--     c.last_name, 
+--     os.name AS status
+-- FROM orders o
+-- JOIN customers c USING (customer_id)
+-- JOIN order_statuses os ON o.status = os.order_status_id;
+
+
+-- TASK 5
+-- Use the sql_store database.
+-- Create a natural join between the orders and shippers tables. Have your query select everything in both tables and only return results 
+-- ordered after August 1st of 2018.
+-- USE sql_store;
+
+-- SELECT *
+-- FROM orders
+-- NATURAL JOIN shippers
+-- WHERE order_date > '2018-08-01';
+
+
+
+-- TASK 6
+-- Use the sql_inventory database.
+-- Create a query that returns all columns from the products table. This query will include a new column named “Availability”. This column 
+-- will display the following depending on how many items are currently in stock:
+-- What to Display	When to Display It
+-- Order More	The quantity is 15 items or lower
+-- Perfect	The quantity is more than 15, but less than 90
+-- Excess	The quantity is 90 or more
+
+-- The query should be displayed with the Order More items at the top, followed by the Perfect items, and the Excess items at the bottom 
+-- (least amount of items at the top)
+-- USE sql_inventory;
+
+-- SELECT *,
+--   'Order More' AS Availability
+-- FROM products
+-- WHERE quantity_in_stock <= 15
+-- UNION
+-- SELECT *,
+--   'Perfect' AS Availability
+-- FROM products
+-- WHERE quantity_in_stock > 15 AND quantity_in_stock < 90
+-- UNION
+-- SELECT *,
+--   'Excess' AS Availability
+-- FROM products
+-- WHERE quantity_in_stock >= 90
+-- ORDER BY quantity_in_stock;
