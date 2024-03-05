@@ -220,3 +220,105 @@ FROM customers
 UNION
 SELECT name
 FROM shippers
+
+
+inserting single rows
+INSERT INTO products (name, quantity_in_stock, unit_price)
+VALUES ('Product1', 10, 1.95 ),
+
+
+inserting multiple rows
+INSERT INTO products (name, quantity_in_stock, unit_price)
+VALUES ('Product1', 10, 1.95 ),
+	('Product2', 10, 1.95 ),
+    ('Product3', 10, 1.95 )
+
+
+inserting hierarchical rows
+INSERT INTO orders (customer_id, order_date, status)
+VALUES (1, '2019-01-02', 1);
+
+INSERT INTO order_items
+VALUES (LAST_INSERT_ID (), 1, 1, 2.95),
+		(LAST_INSERT_ID (), 2, 1, 3.95)
+		
+
+copy a table
+INSERT INTO orders_archived
+SELECT * 
+FROM orders
+WHERE orders_date < '2019-01-01'
+
+OR
+USE sql_invoicing;
+
+CREATE TABLE invoices_archived AS
+SELECT 
+	i.invoice_id,
+    i.number,
+    c.name AS client,
+    i.invoice_total,
+    i.payment_total,
+    i.invoice_date,
+    i.payment_date,
+    i.due_dateinvoices
+FROM invoices i
+JOIN clients c
+	USING (client_id)
+WHERE payment_date IS NOT NULL
+
+
+
+update a single rows
+UPDATE invoices
+SET payment_total = invoice_total * 0.5,
+	payment_date = due_date
+WHERE invoice_id = 3
+
+
+update multiple rows
+UPDATE invoices
+SET payment_total = invoice_total * 0.5,
+	payment_date = due_date
+WHERE client_id = 3
+
+
+update subqueries in updates
+UPDATE invoices
+SET payment_total = invoice_total * 0.5,
+	payment_date = due_date
+WHERE client_id IN 
+	(SELECT client_id
+	FROM clients
+	WHERE state IN ('CA', 'NY'))
+	
+OR
+UPDATE invoices
+SET payment_total = invoice_total * 0.5,
+	payment_date = due_date
+WHERE payment_date IS NULL
+
+
+delete rows
+DELETE FROM invoices
+WHERE invoice_id = (
+SELECT *
+FROM clients
+WHERE name = 'Myworks')
+
+
+restoring database
+
+
+
+
+
+
+
+
+
+
+
+
+
+

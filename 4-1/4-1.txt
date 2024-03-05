@@ -1,0 +1,136 @@
+Objectives:
+Understand and change column attributes in design mode
+Insert records with/without specifying column names
+Insert multiple records with one SQL query
+Insert hierarchical data into separate tables
+Copy an existing table
+ 
+Task: Your task is to do the following:
+1. Create a new query for each of the tasks below
+2. Take a screenshot of the result and paste it into a word processor (Word, Google Doc, etc.)
+3. Copy and paste the SQL code below each screenshot
+4. Label each task with an appropriate heading (Ex: TASK 1, TASK 2, etc.)
+ 
+
+TASK 1:
+The goal of this task is to insert one record at a time into the pet table. For this exercise, you cannot enter the 
+column names in your query. Instead, you need to include a value for each column of the table. Create one query for 
+each of the following records:
+
+name	owner	species	sex	birth	death
+Midnight	Jimmy	dog	m	2000-03-25	NULL
+Liz	Jenna	iguana	f	2001-05-17	NULL
+Killer	Brandy	bunny	f	1983-08-12	1988-01-20
+ 
+ -- Inserting Midnight
+INSERT INTO pet VALUES (DEFAULT, 'Midnight', 'Jimmy', 'dog', 'm', '2000-03-25', NULL);
+
+-- Inserting Liz
+INSERT INTO pet VALUES (DEFAULT, 'Liz', 'Jenna', 'iguana', 'f', '2001-05-17', NULL);
+
+-- Inserting Killer
+INSERT INTO pet VALUES (DEFAULT, 'Killer', 'Brandy', 'bunny', 'f', '1983-08-12', '1988-01-20');
+
+
+ 
+
+TASK 2
+The goal of this task is to insert multiple records at the same time into the event table. All data must be entered 
+using only one query. Here is the data to enter:
+
+pet_id	name	date	type	remark
+10	Midnight	2001-06-02	vet	nail trim
+11	Liz	2002-07-25	vet	Teeth cleaning
+12	Killer	1984-09-13	litter	8 kits!!
+10	Midnight	2002-04-15	vet	bit vet. 9 stiches
+ 
+INSERT INTO event VALUES
+(DEFAULT, 10, 'Midnight', '2001-06-02', 'vet', 'nail trim'),
+(DEFAULT, 11, 'Liz', '2002-07-25', 'vet', 'Teeth cleaning'),
+(DEFAULT, 12, 'Killer', '1984-09-13', 'litter', '8 kits!!'),
+(DEFAULT, 10, 'Midnight', '2002-04-15', 'vet', 'bit vet. 9 stitches');
+
+ 
+
+TASK 3
+There are two tables in the animals database: pet and event. The pet table lists all of the pets and owners. Each of these 
+have a unique pet_id number that is assigned to each animal. The event table lists everything that happened when each pet 
+was brought to the clinic. This table also has a column named pet_id which corresponds to the pet_id column in the pets table.
+
+Many events can happen for one pet. For example: a pet could come in for a nail trimming and then later come in for grooming. 
+Since many events can happen for one pet, the pet_id number column in the events table can have the same number multiple times, 
+one for each event.
+
+Your task is to create a query that will insert a new pet into the pet table. Simultaneously, you need another query to enter 
+two events into the event table. The pet_id number for these two events should be the same as the pet_id number you entered when 
+you inserted the new pet into the pet table. The pet_id number for the event table cannot be hard-coded. Instead, you must use a 
+MySQL function to insert the current id number. For more information, see the "Inserting Hierarchical Rows" video.
+
+Here is the new pet information:
+
+name	owner	species	sex	birth	death
+Amber	Janet	cat	f	2001-03-18	NULL
+ 
+
+Here are the events:
+
+pet_id	name	date	type	remark
+Use the current pet_id number	Amber	2020-01-30	birthday	Gave her a collar
+Use the current pet_id number	Amber	2020-01-30	vet	Had nails trimmed
+ 
+
+ -- Inserting New Pet
+INSERT INTO pet VALUES (DEFAULT, 'Amber', 'Janet', 'cat', 'f', '2001-03-18', NULL);
+
+-- Inserting Events for New Pet
+SET @current_pet_id = LAST_INSERT_ID();
+INSERT INTO event VALUES
+(DEFAULT, @current_pet_id, 'Amber', '2020-01-30', 'birthday', 'Gave her a collar'),
+(DEFAULT, @current_pet_id, 'Amber', '2020-01-30', 'vet', 'Had nails trimmed');
+
+For Task 3, we used the MySQL function LAST_INSERT_ID() to get the current pet_id after inserting the new pet.
+Remember to change event_id to the primary key in the design mode of the pet_archive table as mentioned in the task.
+
+
+TASK 4
+Create one query that copies information from the pet and event tables into a new table named pet_archive. The pet_archive 
+table should be created in the same query as the one copying the information. The query should only move the animals that are 
+female and born before January 1, 1994. Here is a list of the columns and the order in which they should be copied into the 
+pet_archive table:
+
+pet
+event_id
+pet_id
+name
+species
+sex
+birth
+death
+event
+type
+remark
+** After the table is created, enter table design mode (wrench) and change event_id to the primary key. This is an important step 
+for the next exercise. **
+
+1. The returned data table
+2. The animals database inside the Schemas panel with only the following open (please close the other tabs):
+	2a. animals |> Tables |> pet_archive |> Columns
+    
+
+-- Create and Copy to pet_archive
+CREATE TABLE pet_archive AS
+SELECT
+    e.event_id,
+    p.pet_id,
+    p.name,
+    p.species,
+    p.sex,
+    p.birth,
+    p.death,
+    e.type,
+    e.remark
+FROM pet p
+JOIN event e ON p.pet_id = e.pet_id
+WHERE p.sex = 'f' AND p.birth < '1994-01-01';
+
+-- Change event_id to Primary Key in Design Mode
